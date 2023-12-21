@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_spinning_wheel/flutter_spinning_wheel.dart';
 
 void main() {
-  SystemChrome.setEnabledSystemUIOverlays([]);
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
   runApp(MyApp());
 }
 
@@ -60,20 +60,6 @@ class MyHomePage extends StatelessWidget {
     );
   }
 
-  Widget buildNavigationButton({String text, Function onPressedFn}) {
-    return FlatButton(
-      color: Color.fromRGBO(255, 255, 255, 0.3),
-      textColor: Colors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(50.0),
-      ),
-      onPressed: onPressedFn,
-      child: Text(
-        text,
-        style: TextStyle(color: Colors.white, fontSize: 18.0),
-      ),
-    );
-  }
 }
 
 class Basic extends StatelessWidget {
@@ -93,7 +79,7 @@ class Basic extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SpinningWheel(
-              Image.asset('assets/images/wheel-6-300.png'),
+              image: Image.asset('assets/wheel/roulette-8-300.png'),
               width: 310,
               height: 310,
               initialSpinAngle: _generateRandomAngle(),
@@ -102,11 +88,7 @@ class Basic extends StatelessWidget {
               onUpdate: _dividerController.add,
               onEnd: _dividerController.add,
             ),
-            StreamBuilder(
-              stream: _dividerController.stream,
-              builder: (context, snapshot) =>
-                  snapshot.hasData ? BasicScore(snapshot.data) : Container(),
-            )
+                        
           ],
         ),
       ),
@@ -157,7 +139,7 @@ class Roulette extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SpinningWheel(
-              Image.asset('assets/images/roulette-8-300.png'),
+              image: Image.asset('assets/wheel/roulette-8-300.png'),
               width: 310,
               height: 310,
               initialSpinAngle: _generateRandomAngle(),
@@ -173,15 +155,12 @@ class Roulette extends StatelessWidget {
               shouldStartOrStop: _wheelNotifier.stream,
             ),
             SizedBox(height: 30),
-            StreamBuilder(
-              stream: _dividerController.stream,
-              builder: (context, snapshot) =>
-                  snapshot.hasData ? RouletteScore(snapshot.data) : Container(),
-            ),
+            
+  
             SizedBox(height: 30),
-            new RaisedButton(
+            new GestureDetector(
               child: new Text("Start"),
-              onPressed: () =>
+              onTap: () =>
                   _wheelNotifier.sink.add(_generateRandomVelocity()),
             )
           ],
